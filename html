@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MASTER ITEM MELANTAI</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --info: #2980b9;
+            --orange: #f39c12;
+            --dark: #1a2634;
+            --light: #f5f7fa;
+            --gray: #95a5a6;
+            --gradient-success: linear-gradient(145deg, #27ae60, #2ecc71);
+            --gradient-danger: linear-gradient(145deg, #e74c3c, #c0392b);
+            --gradient-info: linear-gradient(145deg, #2980b9, #3498db);
+            --gradient-orange: linear-gradient(145deg, #f39c12, #e67e22);
+            --gradient-dark: linear-gradient(145deg, #2c3e50, #34495e);
+            --shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1);
+            --shadow-sm: 0 5px 10px rgba(0,0,0,0.05);
+            --shadow-inset: inset 0 -3px 0 rgba(0,0,0,0.1);
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            position: relative;
+        }
+
+        /* Card Utama */
+        .card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            color: white;
+            text-align: center;
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow-inset), 0 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        /* Input Row */
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 8px;
+        }
+
+        .label-tag {
+            min-width: 110px;
+            background: var(--success);
+            color: white;
+            padding: 12px 10px;
+            font-size: 11px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(39, 174, 96, 0.3), inset 0 -2px 0 rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        /* Input Fields */
+        input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--info);
+            box-shadow: 0 0 0 4px rgba(41, 128, 185, 0.1), inset 0 2px 4px rgba(0,0,0,0.02);
+            transform: translateY(-1px);
+        }
+
+        input[readonly] {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: var(--dark);
+            font-weight: 600;
+            cursor: default;
+        }
+
+        /* Tombol Scan */
+        .scan-btn {
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            border: none;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.2), inset 0 -2px 0 rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scan-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
+        }
+
+        .scan-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* Button Group */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 16px 12px;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2), inset 0 -3px 0 rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.25), inset 0 -3px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-full {
+            grid-column: span 2;
+        }
+
+        /* Badge */
+        .badge {
+            background: var(--danger);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 30px;
+            font-size: 11px;
+            margin-left: 8px;
+            box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            padding: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 30px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: slideUpModal 0.4s ease;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        @keyframes slideUpModal {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modern Loader */
+        #loader {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modern-spinner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #3498db, #9b59b6, #e74c3c, #f39c12, #2ecc71, #3498db);
+            mask: radial-gradient(farthest-side, transparent calc(100% - 8px), white calc(100% - 7px));
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), white calc(100% - 7px));
+            animation: spin 1.2s linear infinite;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(52, 152, 219, 0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-size: 16px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            padding: 12px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Scanner */
+        #reader-container {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: black;
+            z-index: 2000;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        #reader {
+            flex: 1;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .stop-scan-btn {
+            margin-top: 10px;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            background: var(--danger);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4), inset 0 -3px 0 rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stop-scan-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(231, 76, 60, 0.5), inset 0 -3px 0 rgba(0,0,0,0.2);
+        }
+
+        .stop-scan-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* Table Report */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 14px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .label-tag { min-width: 90px; font-size: 10px; }
+            .btn-group { gap: 8px; }
+            .btn { font-size: 11px; padding: 14px 8px; }
+        }
+    </style>
+</head>
+<body onload="initApp()">
+
+<!-- Modern Loader -->
+<div id="loader">
+    <div class="modern-spinner"></div>
+    <div class="loader-text" id="load-text">MENGHUBUNGKAN...</div>
+</div>
+
+<!-- Card Utama -->
+<div class="card">
+    <div class="header">
+        📦 MASTER ITEM MELANTAI
+    </div>
+    
+    <!-- Barcode Scan -->
+    <div class="input-row">
+        <div class="label-tag" style="background: var(--info);">📌 BARCODE SCAN</div>
+        <input type="text" id="in_barcode" placeholder="Scan barcode di sini..." autofocus onkeydown="if(event.key==='Enter') searchBarcode(this.value)">
+        <button class="scan-btn" onclick="startScanner()">📷</button>
+    </div>
+
+    <!-- Hasil Pencarian Master -->
+    <div class="input-row"><div class="label-tag">🔢 PLU</div><input type="text" id="res_plu" readonly placeholder="-"></div>
+    <div class="input-row"><div class="label-tag">📝 DESCP</div><input type="text" id="res_descp" readonly placeholder="-"></div>
+    <div class="input-row"><div class="label-tag">📍 LOKASI MST</div><input type="text" id="res_lok" readonly placeholder="-"></div>
+    <div class="input-row"><div class="label-tag">🏷️ C2</div><input type="text" id="res_c2" readonly placeholder="-"></div>
+    <div class="input-row"><div class="label-tag">🔖 TAG</div><input type="text" id="res_tag" readonly placeholder="-"></div>
+    
+    <div style="height: 5px;"></div>
+    
+    <!-- Input Fisik -->
+    <div class="input-row">
+        <div class="label-tag" style="background: var(--danger);">🔢 QTY FISIK</div>
+        <input type="number" id="in_qty" placeholder="Masukkan jumlah fisik" min="1">
+    </div>
+    <div class="input-row">
+        <div class="label-tag" style="background: var(--danger);">📍 LOKASI INP</div>
+        <input type="text" id="in_lokasi" placeholder="Scan atau ketik lokasi">
+    </div>
+
+    <!-- Button Group -->
+    <div class="btn-group">
+        <button class="btn btn-full" style="background: var(--gradient-success);" onclick="saveToLocal()">
+            💾 SIMPAN DATA
+        </button>
+        
+        <button class="btn" style="background: var(--gradient-orange);" onclick="syncToServer()">
+            🚀 KIRIM <span id="q_count" class="badge">0</span>
+        </button>
+        
+        <button class="btn" style="background: var(--gradient-info);" onclick="openReport()">
+            📋 REPORT
+        </button>
+        
+        <button class="btn btn-full" style="background: var(--gradient-dark);" onclick="clearForm(true)">
+            🔄 CLEAR DATA
+        </button>
+    </div>
+</div>
+
+<!-- Modal Report -->
+<div id="modalReport" class="modal" onclick="if(event.target===this) closeReport()">
+    <div class="modal-content">
+        <h3 style="margin-top:0; color: var(--primary); text-align:center;">🔍 CEK REPORT BY PLU</h3>
+        
+        <div style="display: flex; gap: 8px; margin-bottom: 5px;">
+            <input type="text" id="search_plu" placeholder="Masukkan PLU..." style="flex:1;">
+            <button class="btn" style="background: var(--gradient-info); padding:12px 20px;" onclick="fetchReport()">
+                CARI
+            </button>
+        </div>
+        
+        <div id="reportResult" style="margin-top: 20px; min-height: 50px;">
+            <!-- Hasil report akan muncul di sini -->
+        </div>
+        
+        <button class="btn btn-full" style="background: var(--gradient-danger); margin-top: 15px;" onclick="closeReport()">
+            TUTUP
+        </button>
+    </div>
+</div>
+
+<!-- Scanner Container -->
+<div id="reader-container">
+    <div id="reader"></div>
+    <button class="stop-scan-btn" onclick="stopScanner()">× BATAL SCAN</button>
+</div>
+
+<script>
+    const G_URL = "https://script.google.com/macros/s/AKfycbxbFpw8cNp1MMD2zegXdQ7wiWKNcamdVGynfjHSk_RvoZB00o8yV0eWzr4r-ynAOa3g/exec"; 
+    let masterData = [];
+    let localQueue = [];
+    let html5QrCode;
+    let selectedItem = null;
+
+    async function initApp() {
+        toggleLoader(true, "Sinkronisasi Master...");
+        try {
+            const res = await fetch(G_URL, { method: 'POST', body: JSON.stringify({ action: "getAllMaster" })});
+            const out = await res.json();
+            masterData = out.data;
+            updateBadge();
+        } catch(e) { 
+            alert("Gagal koneksi server!"); 
+        }
+        toggleLoader(false);
+    }
+
+    function searchBarcode(val) {
+        if(!val) return;
+        const item = masterData.find(i => i.bc1 === val || i.bc2 === val);
+        if(item) {
+            selectedItem = item;
+            document.getElementById('res_plu').value = item.plu;
+            document.getElementById('res_descp').value = item.descp;
+            document.getElementById('res_lok').value = item.lokasi;
+            document.getElementById('res_c2').value = item.c2;
+            document.getElementById('res_tag').value = item.tag;
+            document.getElementById('in_qty').focus();
+        } else {
+            alert("Barcode TIDAK DITEMUKAN!");
+            clearForm(false);
+        }
+    }
+
+    function saveToLocal() {
+        const qty = document.getElementById('in_qty').value;
+        const lok = document.getElementById('in_lokasi').value;
+        const bc = document.getElementById('in_barcode').value;
+
+        if(!selectedItem || !qty || !lok) return alert("Data belum lengkap!");
+
+        const data = {
+            bc_dos: bc,
+            bc_item: selectedItem.bc2,
+            plu: selectedItem.plu,
+            descp: selectedItem.descp,
+            c2: selectedItem.c2,
+            lok_master: selectedItem.lokasi,
+            tag: selectedItem.tag,
+            qty: qty,
+            lok_input: lok
+        };
+
+        localQueue.push(data);
+        updateBadge();
+        clearForm(false);
+        alert("Tersimpan di Antrean!");
+    }
+
+    async function syncToServer() {
+        if(localQueue.length === 0) return alert("Antrean kosong!");
+        
+        toggleLoader(true, "Mengirim " + localQueue.length + " data...");
+        try {
+            const res = await fetch(G_URL, { method: 'POST', body: JSON.stringify({ action: "bulkSave", payload: localQueue })});
+            const out = await res.json();
+            if(out.status === "success") {
+                alert("Semua data berhasil terkirim ke Google Sheets!");
+                localQueue = [];
+                updateBadge();
+            }
+        } catch(e) { 
+            alert("Gagal kirim! Cek koneksi."); 
+        }
+        toggleLoader(false);
+    }
+
+    async function fetchReport() {
+        const plu = document.getElementById('search_plu').value;
+        if(!plu) return alert("Masukkan PLU terlebih dahulu!");
+        
+        toggleLoader(true, "Mencari Data PLU: " + plu);
+        
+        try {
+            const res = await fetch(G_URL, { method: 'POST', body: JSON.stringify({ action: "checkReport", plu: plu })});
+            const out = await res.json();
+            
+            if (out.data.length > 0) {
+                let html = `
+                    <div style="background: linear-gradient(145deg, #2c3e50, #34495e); color:white; padding:12px; margin-bottom:15px; font-size:13px; border-radius:16px; text-align:center; font-weight:bold;">
+                        📦 ITEM: ${out.data[0].descp}
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>QTY CRT</th>
+                                <th>LOKASI INPUT</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                
+                out.data.forEach(r => {
+                    html += `
+                        <tr>
+                            <td style="font-weight:bold; color:var(--info);">${r.qty}</td>
+                            <td>${r.lokasi_in}</td>
+                        </tr>`;
+                });
+                
+                html += '</tbody></table>';
+                
+                const totalQty = out.data.reduce((sum, item) => sum + Number(item.qty), 0);
+                html += `<div style="margin-top:15px; text-align:right; padding:8px; background:#f1f5f9; border-radius:12px; font-weight:bold;">
+                            TOTAL: <span style="color:var(--success); font-size:16px;">${totalQty}</span>
+                        </div>`;
+                
+                document.getElementById('reportResult').innerHTML = html;
+            } else {
+                document.getElementById('reportResult').innerHTML = `
+                    <div style="color:var(--danger); text-align:center; padding:30px; background:#fef2f2; border-radius:16px;">
+                        ⚠️ PLU ${plu} belum pernah di-input!
+                    </div>`;
+            }
+        } catch(e) {
+            alert("Gagal mengambil data report!");
+        }
+        
+        toggleLoader(false);
+    }
+
+    function updateBadge() {
+        document.getElementById('q_count').innerText = localQueue.length;
+    }
+
+    function clearForm(full) {
+        const ids = ['in_barcode','res_plu','res_tag','res_descp','res_lok','res_c2','in_qty'];
+        if(full) ids.push('in_lokasi');
+        ids.forEach(id => document.getElementById(id).value = '');
+        selectedItem = null;
+        document.getElementById('in_barcode').focus();
+    }
+
+    function startScanner() {
+        document.getElementById('reader-container').style.display='flex';
+        html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            document.getElementById('in_barcode').value = txt;
+            searchBarcode(txt);
+            stopScanner();
+        }).catch(() => {});
+    }
+
+    function stopScanner() {
+        if(html5QrCode) html5QrCode.stop().then(() => { 
+            document.getElementById('reader-container').style.display='none'; 
+        });
+    }
+
+    function openReport() { 
+        document.getElementById('modalReport').style.display='block'; 
+        document.getElementById('search_plu').focus();
+    }
+    
+    function closeReport() { 
+        document.getElementById('modalReport').style.display='none'; 
+    }
+    
+    function toggleLoader(s, t) { 
+        document.getElementById('load-text').innerText = t || "MENGHUBUNGKAN...";
+        document.getElementById('loader').style.display = s ? 'flex' : 'none'; 
+    }
+</script>
+</body>
+</html>
