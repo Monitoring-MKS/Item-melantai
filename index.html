@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MASTER ITEM MELANTAI</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -19,214 +20,153 @@
             --info: #2980b9;
             --orange: #f39c12;
             --dark: #1a2634;
-            --light: #f5f7fa;
-            --gray: #95a5a6;
-            --gradient-success: linear-gradient(145deg, #27ae60, #2ecc71);
-            --gradient-danger: linear-gradient(145deg, #e74c3c, #c0392b);
-            --gradient-info: linear-gradient(145deg, #2980b9, #3498db);
-            --gradient-orange: linear-gradient(145deg, #f39c12, #e67e22);
-            --gradient-dark: linear-gradient(145deg, #2c3e50, #34495e);
-            --shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1);
-            --shadow-sm: 0 5px 10px rgba(0,0,0,0.05);
-            --shadow-inset: inset 0 -3px 0 rgba(0,0,0,0.1);
+            --light: #f8fafc;
+            --gray: #94a3b8;
         }
 
         body {
             margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0f172a;
             min-height: 100vh;
-            padding: 15px;
-            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
-            position: relative;
+            padding: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Scrollable Container */
+        .scroll-container {
+            height: 100%;
+            overflow-y: auto;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Card Utama */
         .card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            max-width: 600px;
+            background: white;
+            padding: 16px 12px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 100%;
             margin: 0 auto;
-            animation: slideUp 0.4s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         /* Header */
         .header {
-            background: linear-gradient(145deg, #2c3e50, #34495e);
+            background: var(--primary);
             color: white;
             text-align: center;
-            padding: 18px;
+            padding: 14px 10px;
             border-radius: 16px;
-            margin-bottom: 25px;
+            margin-bottom: 16px;
             font-weight: 700;
-            font-size: 18px;
-            letter-spacing: 1px;
-            box-shadow: var(--shadow-inset), 0 5px 15px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         /* Input Row */
         .input-row {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
-            gap: 8px;
+            margin-bottom: 10px;
+            gap: 6px;
         }
 
         .label-tag {
-            min-width: 110px;
+            min-width: 90px;
             background: var(--success);
             color: white;
-            padding: 12px 10px;
+            padding: 10px 6px;
             font-size: 11px;
-            border-radius: 12px;
-            font-weight: 700;
+            border-radius: 8px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 6px rgba(39, 174, 96, 0.3), inset 0 -2px 0 rgba(0,0,0,0.1);
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         /* Input Fields */
         input {
             flex: 1;
-            padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 16px;
-            font-weight: 500;
+            padding: 12px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-weight: 400;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             background: white;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            min-width: 0;
         }
 
         input:focus {
             outline: none;
             border-color: var(--info);
-            box-shadow: 0 0 0 4px rgba(41, 128, 185, 0.1), inset 0 2px 4px rgba(0,0,0,0.02);
-            transform: translateY(-1px);
+            box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.2);
         }
 
         input[readonly] {
             background: #f1f5f9;
             border-color: #cbd5e1;
-            color: var(--dark);
-            font-weight: 600;
-            cursor: default;
+            color: #334155;
+            font-weight: 500;
         }
 
         /* Tombol Scan */
         .scan-btn {
-            background: linear-gradient(145deg, #2c3e50, #34495e);
+            background: var(--primary);
             border: none;
             color: white;
-            padding: 14px 18px;
-            border-radius: 16px;
+            padding: 12px 14px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 18px;
-            transition: all 0.2s ease;
-            box-shadow: 0 6px 10px rgba(0,0,0,0.2), inset 0 -2px 0 rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            min-width: 54px;
+            font-size: 16px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-width: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .scan-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
+            flex-shrink: 0;
         }
 
         .scan-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            transform: scale(0.96);
+            background: #1e2b38;
         }
 
         /* Button Group */
         .btn-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 16px;
         }
 
         .btn {
-            padding: 16px 12px;
+            padding: 14px 8px;
             border: none;
-            border-radius: 20px;
+            border-radius: 12px;
             color: white;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2), inset 0 -3px 0 rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn:hover::after {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.25), inset 0 -3px 0 rgba(0,0,0,0.2);
+            min-height: 48px;
         }
 
         .btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            transform: translateY(2px);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
         }
 
         .btn-full {
@@ -237,18 +177,11 @@
         .badge {
             background: var(--danger);
             color: white;
-            padding: 4px 8px;
-            border-radius: 30px;
-            font-size: 11px;
-            margin-left: 8px;
-            box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            padding: 3px 7px;
+            border-radius: 20px;
+            font-size: 10px;
+            margin-left: 6px;
+            font-weight: 700;
         }
 
         /* Modal */
@@ -257,39 +190,20 @@
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px);
             z-index: 2000;
-            padding: 15px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            padding: 12px;
+            overflow-y: auto;
         }
 
         .modal-content {
             background: white;
-            padding: 25px;
-            border-radius: 30px;
+            padding: 20px 16px;
+            border-radius: 24px;
             max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.2);
-            animation: slideUpModal 0.4s ease;
-            max-width: 500px;
-            margin: 20px auto;
-        }
-
-        @keyframes slideUpModal {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 100%;
+            margin: 10px auto;
         }
 
         /* Modern Loader */
@@ -297,8 +211,8 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(5px);
             color: white;
             flex-direction: column;
             justify-content: center;
@@ -306,16 +220,14 @@
             z-index: 9999;
         }
 
-        .modern-spinner {
-            width: 60px;
-            height: 60px;
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top: 4px solid var(--info);
             border-radius: 50%;
-            background: conic-gradient(from 0deg, #3498db, #9b59b6, #e74c3c, #f39c12, #2ecc71, #3498db);
-            mask: radial-gradient(farthest-side, transparent calc(100% - 8px), white calc(100% - 7px));
-            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), white calc(100% - 7px));
-            animation: spin 1.2s linear infinite;
-            margin-bottom: 20px;
-            box-shadow: 0 0 30px rgba(52, 152, 219, 0.3);
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
         }
 
         @keyframes spin {
@@ -324,16 +236,12 @@
         }
 
         .loader-text {
-            font-size: 16px;
-            font-weight: 600;
-            background: rgba(255,255,255,0.1);
-            padding: 12px 30px;
-            border-radius: 50px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-top: 10px;
-            letter-spacing: 1px;
+            font-size: 14px;
+            font-weight: 500;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 24px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
         }
 
         /* Scanner */
@@ -344,41 +252,34 @@
             background: black;
             z-index: 2000;
             flex-direction: column;
-            padding: 10px;
+            padding: 8px;
         }
 
         #reader {
             flex: 1;
             width: 100%;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .stop-scan-btn {
-            margin-top: 10px;
-            padding: 18px;
+            margin-top: 8px;
+            padding: 16px;
             border: none;
-            border-radius: 20px;
+            border-radius: 14px;
             background: var(--danger);
             color: white;
-            font-weight: bold;
-            font-size: 16px;
+            font-weight: 600;
+            font-size: 15px;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4), inset 0 -3px 0 rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
             text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .stop-scan-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(231, 76, 60, 0.5), inset 0 -3px 0 rgba(0,0,0,0.2);
+            letter-spacing: 1px;
         }
 
         .stop-scan-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            transform: scale(0.98);
+            background: #c0392b;
         }
 
         /* Table Report */
@@ -386,24 +287,21 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 13px;
         }
 
         th {
             background: var(--primary);
             color: white;
-            padding: 14px 8px;
-            font-size: 12px;
+            padding: 12px 6px;
             font-weight: 600;
-            text-transform: uppercase;
+            font-size: 11px;
+            text-align: center;
         }
 
         td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #ecf0f1;
-            font-size: 13px;
+            padding: 10px 6px;
+            border-bottom: 1px solid #e2e8f0;
             text-align: center;
         }
 
@@ -415,16 +313,47 @@
             background: #f8fafc;
         }
 
-        tr:hover {
-            background: #f1f5f9;
+        /* Search Row */
+        .search-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
         }
 
-        /* Responsive */
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .label-tag { min-width: 90px; font-size: 10px; }
-            .btn-group { gap: 8px; }
-            .btn { font-size: 11px; padding: 14px 8px; }
+        .search-row input {
+            flex: 1;
+            padding: 14px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background: var(--info);
+            border: none;
+            color: white;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            min-width: 70px;
+        }
+
+        .search-btn:active {
+            background: #1e6a9c;
+        }
+
+        /* Hide symbols in text */
+        .label-tag, .btn, .header, .loader-text {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Responsive height */
+        @media (max-height: 640px) {
+            .card { padding: 12px; }
+            .input-row { margin-bottom: 6px; }
+            .btn { padding: 12px 6px; }
         }
     </style>
 </head>
@@ -432,79 +361,79 @@
 
 <!-- Modern Loader -->
 <div id="loader">
-    <div class="modern-spinner"></div>
+    <div class="spinner"></div>
     <div class="loader-text" id="load-text">MENGHUBUNGKAN...</div>
 </div>
 
-<!-- Card Utama -->
-<div class="card">
-    <div class="header">
-        📦 MASTER ITEM MELANTAI
-    </div>
-    
-    <!-- Barcode Scan -->
-    <div class="input-row">
-        <div class="label-tag" style="background: var(--info);">📌 BARCODE SCAN</div>
-        <input type="text" id="in_barcode" placeholder="Scan barcode di sini..." autofocus onkeydown="if(event.key==='Enter') searchBarcode(this.value)">
-        <button class="scan-btn" onclick="startScanner()">📷</button>
-    </div>
+<div class="scroll-container">
+    <!-- Card Utama -->
+    <div class="card">
+        <div class="header">
+            MASTER ITEM MELANTAI
+        </div>
+        
+        <!-- Barcode Scan -->
+        <div class="input-row">
+            <div class="label-tag" style="background: var(--info);">BARCODE SCAN</div>
+            <input type="text" id="in_barcode" placeholder="Scan disini..." autofocus onkeydown="if(event.key==='Enter') searchBarcode(this.value)">
+            <button class="scan-btn" onclick="startScanner()">📷</button>
+        </div>
 
-    <!-- Hasil Pencarian Master -->
-    <div class="input-row"><div class="label-tag">🔢 PLU</div><input type="text" id="res_plu" readonly placeholder="-"></div>
-    <div class="input-row"><div class="label-tag">📝 DESCP</div><input type="text" id="res_descp" readonly placeholder="-"></div>
-    <div class="input-row"><div class="label-tag">📍 LOKASI MST</div><input type="text" id="res_lok" readonly placeholder="-"></div>
-    <div class="input-row"><div class="label-tag">🏷️ C2</div><input type="text" id="res_c2" readonly placeholder="-"></div>
-    <div class="input-row"><div class="label-tag">🔖 TAG</div><input type="text" id="res_tag" readonly placeholder="-"></div>
-    
-    <div style="height: 5px;"></div>
-    
-    <!-- Input Fisik -->
-    <div class="input-row">
-        <div class="label-tag" style="background: var(--danger);">🔢 QTY FISIK</div>
-        <input type="number" id="in_qty" placeholder="Masukkan jumlah fisik" min="1">
-    </div>
-    <div class="input-row">
-        <div class="label-tag" style="background: var(--danger);">📍 LOKASI INP</div>
-        <input type="text" id="in_lokasi" placeholder="Scan atau ketik lokasi">
-    </div>
+        <!-- Hasil Pencarian Master -->
+        <div class="input-row"><div class="label-tag">PLU</div><input type="text" id="res_plu" readonly placeholder="-"></div>
+        <div class="input-row"><div class="label-tag">DESCP</div><input type="text" id="res_descp" readonly placeholder="-"></div>
+        <div class="input-row"><div class="label-tag">LOKASI MST</div><input type="text" id="res_lok" readonly placeholder="-"></div>
+        <div class="input-row"><div class="label-tag">C2</div><input type="text" id="res_c2" readonly placeholder="-"></div>
+        <div class="input-row"><div class="label-tag">TAG</div><input type="text" id="res_tag" readonly placeholder="-"></div>
+        
+        <div style="height: 8px;"></div>
+        
+        <!-- Input Fisik -->
+        <div class="input-row">
+            <div class="label-tag" style="background: var(--danger);">QTY FISIK</div>
+            <input type="number" id="in_qty" placeholder="Input jumlah" min="1">
+        </div>
+        <div class="input-row">
+            <div class="label-tag" style="background: var(--danger);">LOKASI INPUT</div>
+            <input type="text" id="in_lokasi" placeholder="Input lokasi">
+        </div>
 
-    <!-- Button Group -->
-    <div class="btn-group">
-        <button class="btn btn-full" style="background: var(--gradient-success);" onclick="saveToLocal()">
-            💾 SIMPAN DATA
-        </button>
-        
-        <button class="btn" style="background: var(--gradient-orange);" onclick="syncToServer()">
-            🚀 KIRIM <span id="q_count" class="badge">0</span>
-        </button>
-        
-        <button class="btn" style="background: var(--gradient-info);" onclick="openReport()">
-            📋 REPORT
-        </button>
-        
-        <button class="btn btn-full" style="background: var(--gradient-dark);" onclick="clearForm(true)">
-            🔄 CLEAR DATA
-        </button>
+        <!-- Button Group -->
+        <div class="btn-group">
+            <button class="btn btn-full" style="background: var(--success);" onclick="saveToLocal()">
+                SIMPAN DATA
+            </button>
+            
+            <button class="btn" style="background: var(--orange);" onclick="syncToServer()">
+                KIRIM <span id="q_count" class="badge">0</span>
+            </button>
+            
+            <button class="btn" style="background: var(--info);" onclick="openReport()">
+                REPORT
+            </button>
+            
+            <button class="btn btn-full" style="background: var(--primary);" onclick="clearForm(true)">
+                CLEAR DATA
+            </button>
+        </div>
     </div>
 </div>
 
 <!-- Modal Report -->
 <div id="modalReport" class="modal" onclick="if(event.target===this) closeReport()">
     <div class="modal-content">
-        <h3 style="margin-top:0; color: var(--primary); text-align:center;">🔍 CEK REPORT BY PLU</h3>
+        <h3 style="margin-top:0; margin-bottom:16px; color: var(--primary); text-align:center; font-size:16px;">CEK REPORT BY PLU</h3>
         
-        <div style="display: flex; gap: 8px; margin-bottom: 5px;">
-            <input type="text" id="search_plu" placeholder="Masukkan PLU..." style="flex:1;">
-            <button class="btn" style="background: var(--gradient-info); padding:12px 20px;" onclick="fetchReport()">
-                CARI
-            </button>
+        <div class="search-row">
+            <input type="text" id="search_plu" placeholder="Masukkan PLU...">
+            <button class="search-btn" onclick="fetchReport()">CARI</button>
         </div>
         
-        <div id="reportResult" style="margin-top: 20px; min-height: 50px;">
+        <div id="reportResult" style="margin-top: 15px; min-height: 50px;">
             <!-- Hasil report akan muncul di sini -->
         </div>
         
-        <button class="btn btn-full" style="background: var(--gradient-danger); margin-top: 15px;" onclick="closeReport()">
+        <button class="btn btn-full" style="background: var(--danger); margin-top: 15px;" onclick="closeReport()">
             TUTUP
         </button>
     </div>
@@ -513,7 +442,7 @@
 <!-- Scanner Container -->
 <div id="reader-container">
     <div id="reader"></div>
-    <button class="stop-scan-btn" onclick="stopScanner()">× BATAL SCAN</button>
+    <button class="stop-scan-btn" onclick="stopScanner()">BATAL SCAN</button>
 </div>
 
 <script>
@@ -608,8 +537,8 @@
             
             if (out.data.length > 0) {
                 let html = `
-                    <div style="background: linear-gradient(145deg, #2c3e50, #34495e); color:white; padding:12px; margin-bottom:15px; font-size:13px; border-radius:16px; text-align:center; font-weight:bold;">
-                        📦 ITEM: ${out.data[0].descp}
+                    <div style="background: var(--primary); color:white; padding:10px; margin-bottom:12px; font-size:12px; border-radius:10px; text-align:center; font-weight:500;">
+                        ITEM: ${out.data[0].descp}
                     </div>
                     <table>
                         <thead>
@@ -623,7 +552,7 @@
                 out.data.forEach(r => {
                     html += `
                         <tr>
-                            <td style="font-weight:bold; color:var(--info);">${r.qty}</td>
+                            <td style="font-weight:600;">${r.qty}</td>
                             <td>${r.lokasi_in}</td>
                         </tr>`;
                 });
@@ -631,15 +560,15 @@
                 html += '</tbody></table>';
                 
                 const totalQty = out.data.reduce((sum, item) => sum + Number(item.qty), 0);
-                html += `<div style="margin-top:15px; text-align:right; padding:8px; background:#f1f5f9; border-radius:12px; font-weight:bold;">
-                            TOTAL: <span style="color:var(--success); font-size:16px;">${totalQty}</span>
+                html += `<div style="margin-top:12px; text-align:right; padding:8px 12px; background:#f1f5f9; border-radius:8px; font-weight:500;">
+                            TOTAL: <span style="color: var(--success);">${totalQty}</span>
                         </div>`;
                 
                 document.getElementById('reportResult').innerHTML = html;
             } else {
                 document.getElementById('reportResult').innerHTML = `
-                    <div style="color:var(--danger); text-align:center; padding:30px; background:#fef2f2; border-radius:16px;">
-                        ⚠️ PLU ${plu} belum pernah di-input!
+                    <div style="color: var(--danger); text-align:center; padding:20px; background:#fee2e2; border-radius:12px;">
+                        PLU ${plu} belum pernah di-input!
                     </div>`;
             }
         } catch(e) {
